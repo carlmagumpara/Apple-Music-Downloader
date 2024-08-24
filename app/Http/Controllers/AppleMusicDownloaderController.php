@@ -54,15 +54,15 @@ class AppleMusicDownloaderController extends Controller
           '--ffmpeg-path',
           '/usr/local/bin/ffmpeg'
       ]);
-      $process->setTimeout(99999999);
-      $process->run();
 
-      if (!$process->isSuccessful()) {
-          throw new ProcessFailedException($process);
+      try {
+          $process->setTimeout(99999999);
+          $process->run();
+          \Log::info($process->getOutput());
+          \Log::info($process->getErrorOutput());
+      } catch (ProcessFailedException $exception) {
+          \Log::info($exception->getMessage());
       }
-
-      \Log::info($process->getOutput());
-      \Log::info($process->getErrorOutput());
 
       $viewable = [];
 
