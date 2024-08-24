@@ -59,11 +59,12 @@ class AppleMusicDownloaderController extends Controller
           throw new ProcessFailedException($process);
       }
 
+      \Log::info($process->getOutput());
+      \Log::info($process->getErrorOutput());
+
       $viewable = [];
 
       $files = Storage::allFiles('public/albums/'.$folder);
-
-      \Log::info($files);
 
       foreach ($files as $file) {
           $fileInfo = pathinfo(basename($file));
