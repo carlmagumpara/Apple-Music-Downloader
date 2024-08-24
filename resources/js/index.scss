@@ -1,0 +1,33 @@
+.rhap_container {
+  box-shadow: none !important;
+}
+
+.offcanvas-size-xl {
+  --bs-offcanvas-width: min(95vw, 600px) !important;
+}
+.offcanvas-size-xxl {
+  --bs-offcanvas-width: min(95vw, 90vw) !important;
+}
+.offcanvas-size-full {
+  --bs-offcanvas-width: min(100vw, 100vw) !important;
+}
+.offcanvas-size-md { /* add Responsivenes to default offcanvas */
+  --bs-offcanvas-width: min(95vw, 400px) !important;
+}
+.offcanvas-size-sm {
+  --bs-offcanvas-width: min(95vw, 250px) !important;
+}
+
+.horizontal-scroll {
+  white-space: nowrap;
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
