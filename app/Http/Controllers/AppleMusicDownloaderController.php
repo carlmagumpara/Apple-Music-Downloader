@@ -52,7 +52,11 @@ class AppleMusicDownloaderController extends Controller
           '--output-path', 
           'storage',
           '--ffmpeg-path',
-          '/usr/local/bin/ffmpeg'
+          '/usr/local/bin/ffmpeg',
+          '--temp-path',
+          'storage',
+          '--download-mode',
+          'nm3u8dlre'
       ]);
 
       try {
