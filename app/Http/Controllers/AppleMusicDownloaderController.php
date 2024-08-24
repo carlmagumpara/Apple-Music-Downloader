@@ -50,7 +50,9 @@ class AppleMusicDownloaderController extends Controller
           '--template-folder-album', 
           'albums/'.$folder.'/{album} - {album_artist}', 
           '--output-path', 
-          'storage'
+          'storage',
+          '--ffmpeg-path',
+          '/usr/local/bin/ffmpeg'
       ]);
       $process->setTimeout(99999999);
       $process->run();
