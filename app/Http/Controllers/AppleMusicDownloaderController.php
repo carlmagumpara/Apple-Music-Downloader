@@ -55,6 +55,8 @@ class AppleMusicDownloaderController extends Controller
       $process->setTimeout(99999999);
       $process->run();
 
+      \Log::info($process->getOutput());
+
       if (!$process->isSuccessful()) {
           throw new ProcessFailedException($process);
       }
