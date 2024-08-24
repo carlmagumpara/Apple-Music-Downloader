@@ -45,6 +45,7 @@ class AppleMusicDownloaderController extends Controller
       $folder = $request->key;
 
       $process = new Process([
+          'sudo',
           '/usr/local/bin/gamdl', 
           $request->url, 
           '--template-folder-album', 
