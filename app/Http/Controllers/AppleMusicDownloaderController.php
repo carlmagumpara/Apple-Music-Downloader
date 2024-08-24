@@ -45,7 +45,7 @@ class AppleMusicDownloaderController extends Controller
       $folder = $request->key;
 
       $process = new Process([
-          'gamdl', 
+          '/usr/local/bin/gamdl', 
           $request->url, 
           '--template-folder-album', 
           'albums/'.$folder.'/{album} - {album_artist}', 
@@ -62,6 +62,8 @@ class AppleMusicDownloaderController extends Controller
       $viewable = [];
 
       $files = Storage::allFiles('public/albums/'.$folder);
+
+      \Log::info($files);
 
       foreach ($files as $file) {
           $fileInfo = pathinfo(basename($file));
