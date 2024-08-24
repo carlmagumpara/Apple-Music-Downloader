@@ -45,7 +45,7 @@ class AppleMusicDownloaderController extends Controller
       $folder = $request->key;
 
       $process = new Process([
-          '/usr/local/bin/gamdl', 
+          'gamdl', 
           $request->url, 
           '--template-folder-album', 
           'albums/'.$folder.'/{album} - {album_artist}', 
@@ -54,8 +54,6 @@ class AppleMusicDownloaderController extends Controller
       ]);
       $process->setTimeout(99999999);
       $process->run();
-
-      \Log::info($process->getOutput());
 
       if (!$process->isSuccessful()) {
           throw new ProcessFailedException($process);
@@ -110,8 +108,6 @@ class AppleMusicDownloaderController extends Controller
               }
           }
           $zip->close();
-
-          // Storage::deleteDirectory('public/albums/'.$folder);
 
           return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
       } else {
