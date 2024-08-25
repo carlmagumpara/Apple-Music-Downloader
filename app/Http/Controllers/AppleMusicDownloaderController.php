@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\Process;
+// use Symfony\Component\Process\Process;
+// use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
@@ -42,6 +43,19 @@ class AppleMusicDownloaderController extends Controller
 
     public function generate(Request $request)
     {
+
+      $result = Process::run('gamdl');
+
+      \Log::info($result->successful());
+      \Log::info($result->failed());
+      \Log::info($result->exitCode());
+      \Log::info($result->output());
+      \Log::info($result->errorOutput());
+
+      return $result->output();
+
+
+
       $folder = $request->key;
 
       $process = new Process([
