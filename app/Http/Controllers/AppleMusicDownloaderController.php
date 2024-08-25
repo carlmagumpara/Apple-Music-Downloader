@@ -44,7 +44,7 @@ class AppleMusicDownloaderController extends Controller
     public function generate(Request $request)
     {
 
-      $result = Process::run('gffmpeg');
+      $result = Process::run('ffmpeg');
 
       \Log::info($result->successful());
       \Log::info($result->failed());
