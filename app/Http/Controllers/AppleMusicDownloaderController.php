@@ -81,7 +81,7 @@ class AppleMusicDownloaderController extends Controller
       //     \Log::info($exception->getMessage());
       // }
 
-      $result = Process::forever()->run("gamdl ".$request->url." --template-folder-album 'albums/".$folder."/{album} - {album_artist}' --output-path storage --ffmpeg-path /usr/local/bin/ffmpeg");
+      $result = Process::forever()->run("gamdl ".$request->url." --template-folder-album 'albums/".$folder."/{album} - {album_artist}' --output-path storage --ffmpeg-path /usr/local/bin/ffmpeg --temp-path /temp");
 
       \Log::info($result->successful());
       \Log::info($result->failed());
