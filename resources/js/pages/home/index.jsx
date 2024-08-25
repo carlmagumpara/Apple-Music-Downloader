@@ -40,23 +40,20 @@ function Index() {
       setStatus(`${response.data.album_links.length} files found`);
       const files = await Promise.all(response.data.album_links.map(async (item, index) => {
         const { data } = await generate({ url: item, key }).unwrap();
-
-        console.log('data', data);
-
-        // const { picture, ...res } = await awaitableJsmediatags(data.files[index]);
-        // setStatus(`Fetching ${index + 1} out of ${response.data.album_links.length}`);
-        // return { 
-        //   picture: `data:${picture.format};base64,${Buffer.from(picture.data).toString("base64")}`,
-        //   url: data.files[index],
-        //   ...res,
-        // }
+        const { picture, ...res } = await awaitableJsmediatags(data.files[index]);
+        setStatus(`Fetching ${index + 1} out of ${response.data.album_links.length}`);
+        return { 
+          picture: `data:${picture.format};base64,${Buffer.from(picture.data).toString("base64")}`,
+          url: data.files[index],
+          ...res,
+        }
       }));
-      // setStatus('Your download link is ready...');
-      // setFiles(files);
-      // setZipName(`${key}`);
-      // setTimeout(() => {
-      //   setSubmitting(false);
-      // }, 1000);
+      setStatus('Your download link is ready...');
+      setFiles(files);
+      setZipName(`${key}`);
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 1000);
     } catch (error) {
       if (error.response.status === 422) {
         setErrors(error.response.data.errors);

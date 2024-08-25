@@ -43,43 +43,7 @@ class AppleMusicDownloaderController extends Controller
 
     public function generate(Request $request)
     {
-
-      // $result = Process::run('ffmpeg');
-
-      // \Log::info($result->successful());
-      // \Log::info($result->failed());
-      // \Log::info($result->exitCode());
-      // \Log::info($result->output());
-      // \Log::info($result->errorOutput());
-
-      // return $result->output();
-
-
       $folder = $request->key;
-
-      // $process = new Process([
-      //     'gamdl', 
-      //     $request->url, 
-      //     '--template-folder-album', 
-      //     'albums/'.$folder.'/{album} - {album_artist}', 
-      //     '--output-path', 
-      //     'storage',
-      //     '--ffmpeg-path',
-      //     '/usr/local/bin/ffmpeg'
-      //     // '--temp-path'
-      //     // 'storage/temp'
-      //     // '--download-mode'
-      //     // 'nm3u8dlre'
-      // ]);
-
-      // try {
-      //     $process->setTimeout(99999999);
-      //     $process->run();
-      //     \Log::info($process->getOutput());
-      //     \Log::info($process->getErrorOutput());
-      // } catch (ProcessFailedException $exception) {
-      //     \Log::info($exception->getMessage());
-      // }
 
       $result = Process::forever()->run("gamdl ".$request->url." --template-folder-album 'albums/".$folder."/{album} - {album_artist}' --output-path storage --ffmpeg-path /usr/local/bin/ffmpeg --temp-path /var/www/temp");
 
