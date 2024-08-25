@@ -44,7 +44,7 @@ class AppleMusicDownloaderController extends Controller
     public function generate(Request $request)
     {
 
-      $result = Process::run('gamdl');
+      $result = Process::run('gffmpeg');
 
       \Log::info($result->successful());
       \Log::info($result->failed());
@@ -59,7 +59,7 @@ class AppleMusicDownloaderController extends Controller
       $folder = $request->key;
 
       $process = new Process([
-          '/usr/local/bin/gamdl', 
+          'gamdl', 
           $request->url, 
           '--template-folder-album', 
           'albums/'.$folder.'/{album} - {album_artist}', 
