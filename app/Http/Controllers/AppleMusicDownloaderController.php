@@ -81,7 +81,13 @@ class AppleMusicDownloaderController extends Controller
       //     \Log::info($exception->getMessage());
       // }
 
-      Process::forever()->run("gamdl ".$request->url." --template-folder-album 'albums/".$folder."/{album} - {album_artist}' --output-path storage");
+      $result = Process::forever()->run("gamdl ".$request->url." --template-folder-album 'albums/".$folder."/{album} - {album_artist}' --output-path storage");
+
+      \Log::info($result->successful());
+      \Log::info($result->failed());
+      \Log::info($result->exitCode());
+      \Log::info($result->output());
+      \Log::info($result->errorOutput());
 
       $viewable = [];
 
