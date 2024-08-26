@@ -41,7 +41,7 @@ class AppleMusicDownloaderController extends Controller
                 'name' => (string) Str::ulid(),
             ];
             Cache::put($request->url, $data);
-            Cache::put($data['name'], $folder['links']);
+            Cache::put($data['name'], $data['links']);
             $folder = $data;
         }
 
