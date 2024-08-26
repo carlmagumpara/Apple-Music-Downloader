@@ -23,9 +23,9 @@ class AppleMusicDownloaderController extends Controller
         $albumLinks = [];
 
         foreach (array_unique($matches[0]) as $link) {
-          if (strpos($link, 'https://music.apple.com/ph/song/') !== false) {
-            $albumLinks[] = $link;
-          }
+            if (strpos($link, 'https://music.apple.com/ph/song/') !== false) {
+                $albumLinks[] = $link;
+            }
         }
 
         return $albumLinks;
@@ -41,6 +41,7 @@ class AppleMusicDownloaderController extends Controller
                 'name' => (string) Str::ulid(),
             ];
             Cache::put($request->url, $data);
+            Cache::put($data['name'], $folder['links']);
             $folder = $data;
         }
 
@@ -89,8 +90,10 @@ class AppleMusicDownloaderController extends Controller
 
     public function getFiles($folder)
     {
+        $links = Cache::get($folder);
+
         $viewable = [];
-        
+
         $files = Storage::allFiles('public/albums/'.$folder);
 
         foreach ($files as $file) {
@@ -110,6 +113,7 @@ class AppleMusicDownloaderController extends Controller
             'result' => 'success', 
             'message' => '',
             'data' => [
+                'links' => $links,
                 'files' => $viewable,
             ]
         ], 200);
