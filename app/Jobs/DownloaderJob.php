@@ -18,17 +18,14 @@ class DownloaderJob implements ShouldQueue
      */
 
     protected $url;
-    protected $links;
     protected $folder;
 
     public function __construct(
       $url, 
-      $links = [], 
       $folder
     )
     {
         $this->url = $url;
-        $this->links = $links;
         $this->folder = $folder;
     }
 
@@ -37,18 +34,12 @@ class DownloaderJob implements ShouldQueue
      */
     public function handle(): void
     {
-          $result = Process::run('ls -la');
-
-          foreach ($this->links as $value) {
-              $result = Process::forever()->run("gamdl ".$value." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path ".storage_path('app/public')." --ffmpeg-path /usr/local/bin/ffmpeg --cookies-path ".base_path('cookies.txt'));
-
-              \Log::info($result->successful());
-              \Log::info($result->failed());
-              \Log::info($result->exitCode());
-              \Log::info($result->output());
-              \Log::info($result->errorOutput());
-          }
-
-          Process::forever()->run("gamdl ".$this->url." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path ".storage_path('app/public')." --ffmpeg-path /usr/local/bin/ffmpeg --cookies-path ".base_path('cookies.txt'));
+        $result = Process::forever()->run("gamdl ".$this->url." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path ".storage_path('app/public')." --ffmpeg-path /usr/local/bin/ffmpeg --cookies-path ".base_path('cookies.txt'));
+  
+        \Log::info($result->successful());
+        \Log::info($result->failed());
+        \Log::info($result->exitCode());
+        \Log::info($result->output());
+        \Log::info($result->errorOutput());
     }
 }
