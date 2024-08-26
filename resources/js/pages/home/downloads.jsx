@@ -58,7 +58,7 @@ function Downloads({ folder }) {
                 Download Zip
               </Button>
             </div>
-          ) : <p className="text-center mb-5"><Hourglass /> Fetched ({data?.data?.files.length}/{data?.data?.links?.length})...</p>}
+          ) : <p className="text-center mb-5"><Hourglass size={18} /> Fetched ({data?.data?.files.length}/{data?.data?.links?.length})...</p>}
           <ListGroup className="mb-5" variant="flush">
             {files.map(item => (
               <ListGroup.Item key={item.url}>
