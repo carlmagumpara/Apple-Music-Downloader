@@ -45,12 +45,11 @@ class AppleMusicDownloaderController extends Controller
             $folder = $data;
         }
 
-        foreach ($folder['links'] as $key => $value) {
-            DownloaderJob::dispatch(
-              $value,
-              $folder['name']
-            )->delay(now()->addSeconds($key));
-        }
+        DownloaderJob::dispatch(
+          $request->url, 
+          $folder['links'],
+          $folder['name']
+        );
 
         return response()->json([
             'result' => 'success', 
