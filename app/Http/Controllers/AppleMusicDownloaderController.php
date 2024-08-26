@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\{ Process, Cache, Storage };
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use App\Jobs\DownloaderJob;
+use Illuminate\Filesystem\Filesystem;
 
 class AppleMusicDownloaderController extends Controller
 {
@@ -119,11 +120,12 @@ class AppleMusicDownloaderController extends Controller
         ], 200);
     }
 
+    // https://amdl.carlmagumpara.tech/api/downloader/apple-music/clean-up
+
     public function cleanUp()
     {
-        $files = Storage::allFiles('public/albums');
-
-        Storage::delete($files);
+        $file = new Filesystem;
+        $file->cleanDirectory('storage/app/public/albums');
 
         Cache::flush();
 
