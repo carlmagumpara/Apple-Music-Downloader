@@ -37,8 +37,8 @@ class AppleMusicDownloaderController extends Controller
 
         if (!$folder) {
             $data = [
-                'links' => $this->extractLinks($request->url),
                 'name' => (string) Str::ulid(),
+                'links' => $this->extractLinks($request->url),
             ];
             Cache::put($request->url, $data);
             Cache::put($data['name'], $data['links']);
