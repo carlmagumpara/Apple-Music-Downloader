@@ -118,4 +118,15 @@ class AppleMusicDownloaderController extends Controller
             ]
         ], 200);
     }
+
+    public function cleanUp()
+    {
+        $files = Storage::allFiles('public/albums');
+
+        Storage::delete($files);
+
+        Cache::flush();
+
+        return 'Cleaned!';
+    }
 }
