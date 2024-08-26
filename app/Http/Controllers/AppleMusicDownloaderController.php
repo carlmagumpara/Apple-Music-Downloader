@@ -124,7 +124,11 @@ class AppleMusicDownloaderController extends Controller
 
     public function cleanUp()
     {
-        $files = Storage::allFiles('public/albums');
+        $files = Storage::files('public/albums');
+
+        // foreach ($files as $file) {
+
+        // }
 
         \Log::info($files);
 
