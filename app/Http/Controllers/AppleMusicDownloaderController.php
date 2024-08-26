@@ -124,7 +124,7 @@ class AppleMusicDownloaderController extends Controller
 
     public function cleanUp()
     {
-        $result = Process::run('cd '.storage_path('app/public/albums').' && rm -rf *');
+        $result = Process::run('cd '.storage_path('app/public/albums').' && sudo rm -rf *');
 
         \Log::info($result->successful());
         \Log::info($result->failed());
