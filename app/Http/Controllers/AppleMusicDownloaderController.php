@@ -3,22 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Process;
-// use Symfony\Component\Process\Process;
-// use Symfony\Component\Process\Exception\ProcessFailedException;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\{ Process, Cache, Storage };
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
+use App\Jobs\DownloaderJob;
 
 class AppleMusicDownloaderController extends Controller
 {
-    public function extract(Request $request)
+    public function extractLinks($url)
     {
-        // Create a new Guzzle client instance
         $client = new Client();
-        
-        // Send a GET request to the URL
-        $response = $client->request('GET', $request->url);
+
+        $response = $client->request('GET', $url);
         $body = $response->getBody();
         $content = (string) $body;
 
@@ -32,54 +28,36 @@ class AppleMusicDownloaderController extends Controller
           }
         }
 
-        return response()->json([
-            'result' => 'success', 
-            'message' => '',
-            'data' => [
-                'album_links' => $albumLinks,
-            ]
-        ], 200);
+        return $albumLinks;
     }
 
     public function generate(Request $request)
     {
-      $folder = $request->key;
+        $folder = Cache::get($request->url);
 
-      $result = Process::forever()->run("gamdl ".$request->url." --template-folder-album 'albums/".$folder."/{album} - {album_artist}' --output-path storage --ffmpeg-path /usr/local/bin/ffmpeg --temp-path /var/www/temp");
+        if (!$folder) {
+            $data = [
+                'links' => $this->extractLinks($request->url),
+                'name' => (string) Str::ulid(),
+            ];
+            Cache::put($request->url, $data);
+            $folder = $data;
+        }
 
-      \Log::info($result->successful());
-      \Log::info($result->failed());
-      \Log::info($result->exitCode());
-      \Log::info($result->output());
-      \Log::info($result->errorOutput());
+        DownloaderJob::dispatch(
+          $request->url, 
+          $folder['links'],
+          $folder['name']
+        );
 
-      $viewable = [];
-
-      $files = Storage::allFiles('public/albums/'.$folder);
-
-      foreach ($files as $file) {
-          $fileInfo = pathinfo(basename($file));
-          if ($fileInfo['extension'] === 'm4a') {
-            $parts = explode('/', $file);
-
-            if ($parts[0] === 'public') {
-                $parts[0] = 'storage';
-            }
-
-            $viewable[] = url(implode('/', $parts));
-          }
-      }
-
-      return response()->json([
-          'result' => 'success', 
-          'message' => '',
-          'data' => [
-              'files' => $viewable,
-          ]
-      ], 200);
+        return response()->json([
+            'result' => 'success', 
+            'message' => '',
+            'data' => $folder
+        ], 200);
     }
 
-    public function download(Request $request)
+    public function downloadZip(Request $request)
     {
       $folder = $request->zip_name;
       $files = Storage::allFiles('public/albums/'.$folder);
@@ -107,5 +85,33 @@ class AppleMusicDownloaderController extends Controller
       } else {
           return "Failed to create the zip file.";
       }
+    }
+
+    public function getFiles($folder)
+    {
+        $viewable = [];
+        
+        $files = Storage::allFiles('public/albums/'.$folder);
+
+        foreach ($files as $file) {
+            $fileInfo = pathinfo(basename($file));
+            if ($fileInfo['extension'] === 'm4a') {
+              $parts = explode('/', $file);
+
+              if ($parts[0] === 'public') {
+                  $parts[0] = 'storage';
+              }
+
+              $viewable[] = url(implode('/', $parts));
+            }
+        }
+
+        return response()->json([
+            'result' => 'success', 
+            'message' => '',
+            'data' => [
+                'files' => $viewable,
+            ]
+        ], 200);
     }
 }

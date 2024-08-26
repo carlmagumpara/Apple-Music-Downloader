@@ -3,16 +3,12 @@
     "file": "assets/apple-music-BpDEBgAB.png",
     "src": "resources/js/assets/apple-music.png"
   },
-  "resources/js/assets/download-2486_512.gif": {
-    "file": "assets/download-2486_512-8gQnJ8pV.gif",
-    "src": "resources/js/assets/download-2486_512.gif"
-  },
   "resources/js/assets/logo.png": {
     "file": "assets/logo-D2P9nnWU.png",
     "src": "resources/js/assets/logo.png"
   },
   "resources/js/main.jsx": {
-    "file": "assets/main-RRSWG39v.js",
+    "file": "assets/main-DpLHY_M1.js",
     "name": "main",
     "src": "resources/js/main.jsx",
     "isEntry": true,

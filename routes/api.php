@@ -9,8 +9,8 @@ use App\Http\Controllers\{
 
 Route::prefix('downloader')->group(function () {
   Route::prefix('apple-music')->group(function () {
-    Route::post('extract', [AppleMusicDownloaderController::class, 'extract']); // ?url=
     Route::post('generate', [AppleMusicDownloaderController::class, 'generate']); // ?url=
-    Route::get('download', [AppleMusicDownloaderController::class, 'download']); // ?zip=
+    Route::get('get-files/{folder}', [AppleMusicDownloaderController::class, 'getFiles']);
+    Route::get('download-zip', [AppleMusicDownloaderController::class, 'downloadZip']); // ?zip=
   });
 });

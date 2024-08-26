@@ -19,6 +19,7 @@ function App() {
       <Routes>
         <Route path='*' element={<NotFound />} />
         <Route path="/" element={<Home />} />
+        <Route path="/downloads/:folder" element={<Home />} />
       </Routes>
     </div>
   );

@@ -20,16 +20,8 @@ export const appleMusicApi = createApi({
       return headers;
     },
   }),
-  timeout: 99999999,
   tagTypes: [],
-  endpoints: (builder) => ({    
-    extract: builder.mutation({
-      query: (body) => ({
-        url: `/extract`,
-        method: 'POST',
-        body,
-      }),
-    }),
+  endpoints: (builder) => ({
     generate: builder.mutation({
       query: (body) => ({
         url: `/generate`,
@@ -37,12 +29,17 @@ export const appleMusicApi = createApi({
         body,
       }),
     }),
+    getFiles: builder.query({
+      query: ({ folder = '' }) => ({ url: `/get-files/${folder}` }),
+      providesTags: ['Entity'],
+    }),
+    
   }),
 })
 
 // Export hooks for usage in functional pages, which are
 // auto-generated based on the defined endpoints
 export const {
-  useExtractMutation,
   useGenerateMutation,
+  useGetFilesQuery
 } = appleMusicApi
