@@ -48,5 +48,7 @@ class DownloaderJob implements ShouldQueue
               \Log::info($result->output());
               \Log::info($result->errorOutput());
           }
+
+          Process::forever()->run("gamdl ".$this->url." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path ".storage_path('app/public')." --ffmpeg-path /usr/local/bin/ffmpeg --cookies-path ".base_path('cookies.txt'));
     }
 }

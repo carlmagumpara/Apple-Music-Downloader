@@ -47,7 +47,7 @@ function Downloads({ folder }) {
 
   return (
     <LoadingOverlay
-      active={isLoading}
+      active={(isLoading || (data?.data?.files.length !== data?.data?.links?.length))}
       spinner={
         <Hourglass
           visible={true}
@@ -59,7 +59,7 @@ function Downloads({ folder }) {
           colors={['#ffffff', '#72a1ed']}
         />
       }
-      text={status}
+      text="Downloading..."
     >
       <div id="folder">
         {files.length !== 0 ? (
@@ -80,7 +80,7 @@ function Downloads({ folder }) {
                       <img style={{ width: 50 }} src={item.picture} alt={item.title} className="rounded border" />
                     </div>
                     <div className="flex-grow-1 ms-3">
-                      <h5 className="mb-0">{item.title}</h5>
+                      <h5 className="mb-0">{item.track}. {item.title}</h5>
                       <p className="mb-0">{item.artist} | {item.album}</p>
                     </div>
                     <Button

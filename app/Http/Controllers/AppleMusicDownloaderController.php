@@ -60,32 +60,32 @@ class AppleMusicDownloaderController extends Controller
 
     public function downloadZip(Request $request)
     {
-      $folder = $request->zip_name;
-      $files = Storage::allFiles('public/albums/'.$folder);
+        $folder = $request->zip_name;
+        $files = Storage::allFiles('public/albums/'.$folder);
 
-      $zip = new \ZipArchive;
-      $zipFileName = explode("/", $files[0])[3].'.zip';
+        $zip = new \ZipArchive;
+        $zipFileName = explode("/", $files[0])[3].'.zip';
 
-      if ($zip->open(public_path($zipFileName), \ZipArchive::CREATE) === TRUE) {
-          foreach ($files as $file) {
-              $zip->addFile(storage_path('app/'.$file), basename($file));
-              $fileInfo = pathinfo(basename($file));
-              if ($fileInfo['extension'] === 'm4a') {
-                $parts = explode('/', $file);
+        if ($zip->open(public_path($zipFileName), \ZipArchive::CREATE) === TRUE) {
+            foreach ($files as $file) {
+                $zip->addFile(storage_path('app/'.$file), basename($file));
+                $fileInfo = pathinfo(basename($file));
+                if ($fileInfo['extension'] === 'm4a') {
+                  $parts = explode('/', $file);
 
-                if ($parts[0] === 'public') {
-                    $parts[0] = 'storage';
+                  if ($parts[0] === 'public') {
+                      $parts[0] = 'storage';
+                  }
+
+                  $viewable[] = url(implode('/', $parts));
                 }
+            }
+            $zip->close();
 
-                $viewable[] = url(implode('/', $parts));
-              }
-          }
-          $zip->close();
-
-          return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
-      } else {
-          return "Failed to create the zip file.";
-      }
+            return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
+        } else {
+            return "Failed to create the zip file.";
+        }
     }
 
     public function getFiles($folder)
