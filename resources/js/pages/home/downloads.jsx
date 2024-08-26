@@ -46,24 +46,10 @@ function Downloads({ folder }) {
   }, []);
 
   return (
-    <LoadingOverlay
-      active={(isLoading || (data?.data?.files.length !== data?.data?.links?.length))}
-      spinner={
-        <Hourglass
-          visible={true}
-          height={50}
-          width={50}
-          ariaLabel="hourglass-loading"
-          wrapperStyle={{}}
-          wrapperClass="me-3"
-          colors={['#ffffff', '#72a1ed']}
-        />
-      }
-      text="Downloading..."
-    >
-      <div id="folder">
-        {files.length !== 0 ? (
-          <>
+    <div id="folder">
+      {data ? (
+        <>
+          {(data?.data?.files.length === data?.data?.links?.length) ? (
             <div className="text-center mb-5">
               <p>Your download link is ready...</p>
               <Button
@@ -72,31 +58,31 @@ function Downloads({ folder }) {
                 Download Zip
               </Button>
             </div>
-            <ListGroup className="mb-5" variant="flush">
-              {files.map(item => (
-                <ListGroup.Item key={item.url}>
-                  <div className="d-flex">
-                    <div className="flex-shrink-0">
-                      <img style={{ width: 50 }} src={item.picture} alt={item.title} className="rounded border" />
-                    </div>
-                    <div className="flex-grow-1 ms-3">
-                      <h5 className="mb-0">{item.track}. {item.title}</h5>
-                      <p className="mb-0">{item.artist} | {item.album}</p>
-                    </div>
-                    <Button
-                      size="sm"
-                      onClick={() => saveAs(item.url, `${item.track}. ${item.title} - ${item.artist}.${item.url.split('.').pop()}`)}
-                    >
-                      Download
-                    </Button>
+          ) : <p className="text-center mb-5"><Hourglass /> Fetched ({data?.data?.files.length}/{data?.data?.links?.length})...</p>}
+          <ListGroup className="mb-5" variant="flush">
+            {files.map(item => (
+              <ListGroup.Item key={item.url}>
+                <div className="d-flex">
+                  <div className="flex-shrink-0">
+                    <img style={{ width: 50 }} src={item.picture} alt={item.title} className="rounded border" />
                   </div>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </>
-        ) : null}
-      </div>
-    </LoadingOverlay>
+                  <div className="flex-grow-1 ms-3">
+                    <h5 className="mb-0">{item.track}. {item.title}</h5>
+                    <p className="mb-0">{item.artist} | {item.album}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() => saveAs(item.url, `${item.track}. ${item.title} - ${item.artist}.${item.url.split('.').pop()}`)}
+                  >
+                    Download
+                  </Button>
+                </div>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </>
+      ) : null}
+    </div>
   )
 }
 
