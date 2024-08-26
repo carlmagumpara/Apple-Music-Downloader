@@ -37,6 +37,8 @@ class DownloaderJob implements ShouldQueue
      */
     public function handle(): void
     {
+          $result = Process::run('ls -la');
+
           // foreach ($this->links as $value) {
           //     $result = Process::forever()->run("gamdl ".$value." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path storage/app/public --ffmpeg-path /usr/local/bin/ffmpeg");
 
@@ -48,7 +50,7 @@ class DownloaderJob implements ShouldQueue
 
           // }
 
-          $result = Process::forever()->run("gamdl ".$this->url." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path storage/app/public --ffmpeg-path /usr/local/bin/ffmpeg");
+          // $result = Process::forever()->run("gamdl ".$this->url." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path storage/app/public --ffmpeg-path /usr/local/bin/ffmpeg");
 
           \Log::info($result->successful());
           \Log::info($result->failed());
