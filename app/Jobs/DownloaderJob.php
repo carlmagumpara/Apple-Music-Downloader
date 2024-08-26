@@ -50,12 +50,14 @@ class DownloaderJob implements ShouldQueue
 
           // }
 
-          // $result = Process::forever()->run("gamdl ".$this->url." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path storage/app/public --ffmpeg-path /usr/local/bin/ffmpeg");
+          // $result = Process::forever()->run("gamdl ".$this->url." --template-folder-album 'albums/".$this->folder."/{album} - {album_artist}' --output-path storage/app/public --ffmpeg-path /usr/local/bin/ffmpeg --cookies-path ");
 
           \Log::info($result->successful());
           \Log::info($result->failed());
           \Log::info($result->exitCode());
           \Log::info($result->output());
           \Log::info($result->errorOutput());
+
+          \Log::info( base_path() );
     }
 }
